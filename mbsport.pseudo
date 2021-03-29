@@ -1,0 +1,322 @@
+// Globale Variablen
+Variable    MeinSpeicher       = dictionary
+Variable    heute              = checke heutiges Datum vom System // yyyy-mm-dd
+Variable    letztes_training   = lies MeinSpeicher:GrößterIndex:Trainingsdatum
+Variable    abstand_zu_heute   = heute - MeinSpeicher:GrößterIndex:Trainingsdatum
+
+
+
+/////////////////////////
+// Aufbau MeinSpeicher //
+/////////////////////////
+// MeinSpeicher = [
+//                  "1": [
+//                          "Trainingsdatum" : string? "yyyy-mm-dd",
+//                          "Tag im Plan" : Int,
+//                          "Joggen Dauer" : string? "hh:mm:ss",
+//                          "Joggen Strecke" : Int (weil in Meter),
+//                          "Warm Up Wiederholungen" : Int,
+//                          "Warum Up Zeit" : Int,
+//                          "Turkish Getup" : [
+//                                              "Gewicht" : Int/Enum (siehe unten),
+//                                              "Wiederholungen" : Int,
+//                                              "Fortschritt Counter": Int,
+//                                            ],
+//                          "Squat" : [
+//                                      "Sessions" : Int,
+//                                      "Gewicht" : Int,
+//                                      "Wiederholungen" : Int,                                        
+//                                    ],
+//                          "Swing" : [
+//                                      "Sessions" : Int,
+//                                      "Gewicht" : Int/Enum,
+//                                      "Wiederholungen" : Int,
+//                                    ],
+//                          "Clean and Press" : [
+//                                                  "Sessions" : Int,
+//                                                  "Gewicht" : Int,
+//                                                  "Wiederholungen" : Int,
+//                                              ],
+//                          "Snatch" : [
+//                                      "Sessions" : Int,
+//                                      "Gewicht" : Int/Enum,
+//                                      "Wiederholungen" : Int,
+//                                     ],
+//                          "Club Bell Level" : Int,
+//                          "Club Bell Gewicht": Int/Enum,
+//                       ],
+//                  "2": [], et cetera…
+//                ]
+
+
+
+Unveränderliches Modul "Vordefinierte Übungen"
+// in späteren Versionen evtl. hinzufügen und ändern erlaubt
+// jetzt noch nicht nötig, da schon exakt "mein" System
+    Sub-Modul "Kettlebell Grundübungen"
+        Gewicht hat unveränderliche Stufen: (1) 8kg, (2) 12kg,… (9) 40kg
+        1 Turkish Getup
+            Art der Progression "amap"
+        2 Squat
+            Art der Progression "emom" (mit 5 Wiederholungen)
+        3 Swing
+            Art der Progression "emom" (mit 10 Wiederholungen)
+        4 Clean and Press
+            Art der Progression "reverse ladder"
+        5 Snatch
+            Art der Progression "emom" (mit 5 Wiederholungen)
+    Sub-Modul "Club Bell Grundübungen"
+        Gewicht hat unveränderliche Stufen: (1) 4kg, (2) 6kg… (9) 20kg
+        Art der Progression "continuous_change"
+        Level 1
+            1 Inside Circle
+            2 Outside Circle
+            3 Shield Cast
+        Level 2
+            1 Inside Pendulum
+            2 Outside Pendulum
+            3 180° Rotating Pull Over
+        Level 3
+            1 Mill
+            2 Reverse Mill
+            3 Swipe
+    Sub-Modul "Warm Up"
+        Art der Progression "linear_until_threshold"
+        1 Sit Up
+            threshold_wdh = 100 Wiederholungen
+        2 Push Up
+            threshold_wdh = 100 Wiederholungen
+        3 Horse Riding Stance
+            threshold_time = 300 Sekunden
+    Sub-Modul "Joggen"
+        Art der Progression "joggen_prog"
+
+
+Unveränderliches Modul "Art der Progression"
+    1 amap
+        Konstante   Session         = 1
+        Variable    Gewicht         = Element (i) aus unveränderliche Stufen (Kettlebell)
+        Variable    Dauer           = 10 Minuten // unveränderlich…bis siehe Schleife unten
+        Variable    Wiederholungen  = User Input erfragen und speichern
+        Variable    Fortschritt     = je nach Fortschritt Zahl zwischen 1…10
+        wenn Variable_Fortschritt > 10
+            setze Variable_Fortschritt zurück auf 1
+            erhöhe Variable_Gewicht zum nächsten Element (i)
+            wenn Element (i) nicht mehr höher geht
+                bleibe bei Variable_Gewicht
+                erhöhe Variable_Dauer um 1 Minute
+                wenn Variable_Dauer == 30 Minuten
+                    lass Variable_Dauer bei 30 Minuten
+                    stelle Frage "Neues Gewicht kaufen?" // at this point: Beruf wechseln, aber egal…
+    2 emom
+        Variable    Session         = je nach Fortschritt Zahl zwischen 10…20
+        Variable    Gewicht         = Element (i) aus unveränderliche Stufen (Kettlebell)
+        Variable    Dauer           = Variable_Session // emom = every minute on the minute…
+        Variable    Wiederholungen  = übermittelter_Parameter_aus_Sub-Modul * Variable_Session
+        Variable    Fortschritt     = Variable_Session
+        wenn Variable_Fortschritt > 20
+            setze Variable_Session zurück auf 10
+            erhöhe Variable_Gewicht zum nächsten Element (i)
+            wenn Element (i) nicht mehr höher geht
+                bleibe bei Variable_Gewicht
+                stelle Frage "Neues Gewicht kaufen?"
+    3 reverse ladder
+        Variable    Session         = je nach Fortschritt Zahl zwischen 5…10
+        Variable    Gewicht         = Element (i) aus unveränderliche Stufen (Kettlebell)
+        Variable    Dauer           = Variable_Session
+        Variable    Wiederholungen  = Output_reverse_ladder_Schleife
+        Schleife Variable counter = Variable_Session; Variable_counter =- 1; return value Output_reverse_ladder
+            Variable Output_reverse_ladder =+ counter
+            // boah, ich krieg das nicht mal in Pseudocode hin… f*ck
+            // also: session = 10 ? dann ist Wiederholungen 10+9+8…+1 = 55
+        Variable    Fortschritt     = Variable_Session
+        wenn Variable_Fortschritt > 10
+            setze Variable_Session zurück auf 5
+            erhöhe Variable_Gewicht zum nächsten Element (i)
+            wenn Element (i) nicht mehr höher geht
+                bleibe bei Variable_Gewicht
+                erhöhe Variable_Session um 1
+                wenn Variable_Session > 20
+                    lass Variable_Session bei 20
+                    stelle Frage "Neues Gewicht kaufen?" 
+    4 continuous_change
+        Variable    Session         = je nach Fortschritt Zahl zwischen 10…20
+        Variable    Gewicht         = Element (i) aus unveränderliche Stufen (CLUB Bell)
+        Konstante   Ausführdauer    = 4 Sekunden // kann später angepasst werden
+        Variable    Dauer           = Variable_Wiederholungen * Konstante_Ausführdauer * 2
+        Variable    Wiederholungen  = 5 * Variable_Session
+        Variable    Fortschritt_count   = Variable_Session
+        Variable    Fortschritt_level   = Zahl zwischen 1…3
+        wenn Variable_Fortschritt_count > 20
+            erhöhe Variable_Fortschritt_level um 1
+            wenn Variable_Fortschritt_level > 3
+                setze Variable_Fortschritt_level zurück auf 1
+                erhöhe Variable_Gewicht zum nächsten Element (i)
+                wenn Element (i) nicht mehr höher geht
+                    setze Variable_Fortschritt_level sofort auf 3
+                    stelle Frage "Neues Gewicht kaufen?"
+            setze Variable_Session zurück auf 10
+    5 linear_until_threshold
+        Variable    threshold_wdh   = 10…100
+        Variable    threshold_time  = 30…300
+        Variable    Fortschritt_wdh = Variable_threshold_wdh
+        Variable    Fortschritt_time= Variable_threshold_time
+        wenn Variable_Fortschritt_wdh < 100
+            erhöhre Variable_threshold_wdh um 1
+            wenn Variable_threshold_wdh > 100
+                setze Variable_threshold_wdh auf 100 // Plateau bei 100 forever
+        wenn Variable_Fortschritt_time < 300
+            erhöhre Variable_threshold_time um 5
+            wenn Variable_threshold_time > 300
+                setze Variable_threshold_time auf 300 // Plateau bei 300 forever
+    6 joggen_prog
+        Variable    Dauer       = User Input erfassen und speichern // in hh:mm:ss
+        Variable    Strecke     = User Input erfassen und speichern // in Meter
+
+
+
+Unveränderliches Modul "Heavy-Light Konzept"
+    Variable Gewicht_heute = Int
+    wenn Zustand heavy
+        Variable_Gewicht_heute = Variable_Gewicht
+    wenn Zustand light
+        Variable_Gewicht_heute = 2 Elemente tiefer als Variable_Gewicht
+        wenn es gibt keine 2 Elemente tiefer
+            nimm kleinstes Element
+
+
+
+Unveränderliches Modul "Masterplan"
+    Variable Tag = 1…7
+    Wenn Variable_Tag = 1
+        Vordefinierte Übungen:Warm Up
+        Vordefinierte Übungen:Joggen
+        VÜ:KB:1 Turkish Getup (Zustand: heavy)
+        VÜ:KB:2 Squat (Zustand: light)
+    Wenn Variable_Tag = 2
+        Vordefinierte Übungen:Warm Up
+        Vordefinierte Übungen:Joggen
+        VÜ:KB:4 Clean and Press (Zustand: heavy)
+        VÜ:KB:3 Swing (Zustand: light)
+    Wenn Variable_Tag = 3
+        Vordefinierte Übungen:Warm Up
+        Vordefinierte Übungen:Joggen
+        VÜ:Cb:Level (lies aus Variable_MeinSpeicher "Art der Progression:4 continuous change:Fortschritt_level")
+        // 20:55:17 Uhr: etwas wonky, da Speicher noch nicht definiert
+        // 22:20:05 Uhr: Speicher definiert, jetzt also: lies MeinSpeicher:GrößterIndex:ClubbellLevel
+    Wenn Variable_Tag = 4    
+        Vordefinierte Übungen:Warm Up
+        Vordefinierte Übungen:Joggen
+        VÜ:KB:3 Swing (Zustand: heavy)
+        VÜ:KB:1 Turkish Getup (Zustand: light)
+    Wenn Variable_Tag = 5
+        Vordefinierte Übungen:Warm Up
+        Vordefinierte Übungen:Joggen
+        VÜ:KB:2 Squat (Zustand: heavy)
+        VÜ:KB:4 Clean and Press (Zustand: light)
+    Wenn Variable_Tag = 6
+        Vordefinierte Übungen:Warm Up
+        Vordefinierte Übungen:Joggen
+        VÜ:KB:5 Snatch (Zustand: heavy)
+    Wenn Variable_Tag = 7
+        Vordefinierte Übungen:Warm Up
+        Vordefinierte Übungen:Joggen
+        VÜ:Cb:Level (lies aus Variable_MeinSpeicher "Art der Progression:4 continuous change:Fortschritt_level")
+        // siehe Variable_Tag = 3
+
+
+
+Rücksetz-Routine
+    wenn abstand_zu_heute 0…7 tage
+        print "Mach mal nicht so ein Drama."
+        warte 5 Sekunden
+        schließe ./mbsport
+    wenn abstand_zu_heute 8…14 Tage
+        lies MeinSpeicher:GrößterIndex
+        wenn GrößterIndex > 14
+            gehe 14 Schritte im Index zurück
+            lies alle Daten dieses vergangen Index aus
+            speichere diese Daten im GrößterIndex+1 mit heutigem Datum (Variable_heute)
+            print "Du wurdest 14 Trainings zurückgesetzt."
+            warte 5 sekunden
+            schließe ./mbsport
+        wenn GrößterIndex < 14
+            lies alle Daten in Index.1 aus
+            speichere diese Daten in GrößterIndex+1 mit heutigem Datum (Variable_heute)
+            print "Ähm. Du hattest nicht mal richtig angefangen? Du landest auf Tag 1… Sorry, buddy."
+            warte 5 Sekunden
+            schließe ./mbsport
+    wenn abstand_zu_heute 15…30 Tage
+        lies MeinSpeicher:GrößterIndex
+        wenn GrößterIndex > 45
+            gehe 21 Schritte im Index zurück
+            lies alle Daten dieses vergangenen Index aus
+            speichere diese Daten im GrößterIndex+1 mit heutigem Datum (Variable_heute)
+            print "Nicht sicher, ob krank oder faul, aber du kriegst ein Chance. Du wurdest 3 Woche zurückgesetzt."
+            warte 5 sekunden
+            schließe ./mbsport
+        wenn GrößterIndex < 45
+            lies alle Daten in Index.1 aus
+            speichere diese Daten in GrößterIndex+1 mit heutigem Datum (Variable_heute)
+            print "Ähm. Du hattest nicht mal richtig angefangen? Du landest auf Tag 1… Sorry, buddy."
+            warte 5 Sekunden
+            schließe ./mbsport
+    wenn abstand_zu_heute 30+
+        lies alle Daten in Index.1 aus
+        speichere diese Daten in GrößterIndex+1 mit heutigem Datum (Variable_heute)
+        print "Ähm. Du hattest nicht mal richtig angefangen? Du landest auf Tag 1… Sorry, buddy."
+        warte 5 Sekunden
+        schließe ./mbsport
+
+
+
+////////////////////
+// Programmablauf //
+////////////////////
+
+wenn abstand_zu_heute = 0
+    print "Entweder hast du heute schon trainiert oder du hast die Rücksetzroutine ausgelöst. Möchtest du trainieren oder schließen?"
+    user.input erwartet trainieren/schließen
+    wenn trainieren
+        starte Masterplan-Routine
+    wenn schließen
+        print "Alles wird gut. Komm morgen wieder."
+        schließe ./mbsport
+wenn abstand_zu_heute = 1
+    print "Sehr gut. Los geht's!"
+    starte Masterplan-Routine
+wenn abstand_zu_heute = 2…7
+    print "Weiter im Plan, oder zurücksetzen?"
+    user.input erwartet weiter/zurück
+    wenn weiter
+        starte Masterplan-Routine
+    wenn zurück
+        starte Rücksetz-Routine
+wenn abstand_zu_heute > 7
+    print "Zurücksetzen ist unausweichlich, Buddy. Gib dir mehr Mühe."
+    starte Rücksetz-Routine
+
+
+
+Masterplan-Routine
+    finde MeinSpeicher:GrößterIndex
+    speichere alle Einträge in temporären Variablen
+    finde MeinSpeicher:GrößterIndex:Tag im Plan und setze ModulMasterplan_Variable_Tag auf diese
+    print Übersicht von Inhalt ModulMasterplan_Variable_Tag
+    user.input "Bereit?"
+    wenn ja
+        starte Modul-Routine
+    wenn nein
+        print "Warum bist du dann hier?"
+        warte 5 Sekunden
+        schließe ./mbsport
+
+Modul-Routine
+    // Ich sehe hier, dass meine Module oben, noch nicht genug Sinn ergeben,
+    // ich durchdenke das morgen weiter.
+    // Vermutlich sind die Module auch Dictionaries, und dann ergibt Zeile 303
+    // auch mehr Sinn. Routinen die ich dann wirklich noch brauche:
+    // - AnzeigeInfos
+    // - StarteTimer
+    // - MachPausenBeep
+    // - SpeichereHeutigeErgebnisse in MeinSpeicher
