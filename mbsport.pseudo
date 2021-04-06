@@ -18,33 +18,35 @@ Variable    abstand_zu_heute   = heute - MeinSpeicher:GrößterIndex:Trainingsda
 //                          "Warm Up Wiederholungen" : Int,
 //                          "Warum Up Zeit" : Int,
 //                          "Turkish Getup" : [
-//                                              "Gewicht" : Int/Enum (siehe unten),
-//                                              "Wiederholungen" : Int,
-//                                              "Fortschritt Counter": Int, // = die andere Version von "Sessions", da nichts hochzählt
+//                                      "Gewicht" : Int/Enum (siehe unten),
+//                                      "Wiederholungen" : Int,
+//                                      "SessionsCounter": Int,
 //                                            ],
 //                          "Squat" : [
-//                                      "Sessions" : Int,
 //                                      "Gewicht" : Int,
-//                                      "Wiederholungen" : Int,                                        
+//                                      "Wiederholungen" : Int,
+//                                      "SessionsCounter" : Int,
 //                                    ],
 //                          "Swing" : [
-//                                      "Sessions" : Int,
-//                                      "Gewicht" : Int/Enum,
+//                                      "Gewicht" : Int,
 //                                      "Wiederholungen" : Int,
+//                                      "SessionsCounter" : Int,
 //                                    ],
 //                          "Clean and Press" : [
-//                                                  "Sessions" : Int,
-//                                                  "Gewicht" : Int,
-//                                                  "Wiederholungen" : Int,
+//                                      "Gewicht" : Int,
+//                                      "Wiederholungen" : Int,
+//                                      "SessionsCounter" : Int,
 //                                              ],
 //                          "Snatch" : [
-//                                      "Sessions" : Int,
-//                                      "Gewicht" : Int/Enum,
+//                                      "Gewicht" : Int,
 //                                      "Wiederholungen" : Int,
-//                                     ],
-//                          "Club Bell Level" : Int,
-//                          "Club Bell Gewicht": Int/Enum,
-//                       ],
+//                                      "SessionsCounter" : Int,//                                     ],
+//                          "Club Bell" : [
+//                                      "Gewicht" : Int/Enum,
+//                                      "Level" : Int,
+//                                        ],
+//                        ]
+//
 //                  "2": [], et cetera…
 //                ]
 
