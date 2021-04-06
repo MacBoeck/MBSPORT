@@ -6,9 +6,11 @@ Variable    abstand_zu_heute   = heute - MeinSpeicher:GrößterIndex:Trainingsda
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Aufbau Speichern: StatusQuo als Archiv für Auswertung später, Heute als schnellerer Ladestartpunkt (Idee von R.S.) //
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+// Aufbau Speichern: StatusQuo für leichteres Zurücksetzen                //
+//                   Heute als schnellerer Ladestartpunkt (Idee von R.S.) //
+//                   Archiv für Auswertung                                //
+////////////////////////////////////////////////////////////////////////////
 //
 // StatusQuo = [
 //               "Joggen" : [
@@ -57,10 +59,62 @@ Variable    abstand_zu_heute   = heute - MeinSpeicher:GrößterIndex:Trainingsda
 //               "Club Bell" : [
 //                              "Gewicht" : Int/Enum,
 //                              "Level" : Int,
+//                             ], 
 //             ]
 //
 // Heute = [
 //         ]
+//
+// Archiv = [
+//                    
+//               "Joggen" : [
+//                            "Dauer" : dict-string,
+//                            "Strecke" : dict-int,
+//                          ],
+//               "Warm Up" : [
+//                            "Liegestütze" : [
+//                                             "Wiederholungen" : dict-int,
+//                                             "SessionsCounter" : dict-int,
+//                                            ],
+//                            "Sit Ups" : [
+//                                         "Wiederholungen" : dict-int,
+//                                         "SessionsCounter" : dict-int,
+//                                        ],
+//                            "Horse Riding Stance" : [
+//                                                     "Dauer" : dict-int, // in Sekunden
+//                                                     "SessionsCounter" : dict-int,
+//                                                    ],
+//                           ],
+//               "Turkish Getup" : [
+//                                  "Gewicht" : dict-int,
+//                                  "Wiederholungen" : dict-int,
+//                                  "SessionsCounter": dict-int,
+//                                 ],
+//               "Squat" : [
+//                          "Gewicht" : dict-int,
+//                          "Wiederholungen" : dict-int,
+//                          "SessionsCounter" : dict-int,
+//                         ],
+//               "Swing" : [
+//                          "Gewicht" : dict-int,
+//                          "Wiederholungen" : dict-int,
+//                          "SessionsCounter" : dict-int,
+//                         ],
+//               "Clean and Press" : [
+//                                    "Gewicht" : dict-int,
+//                                    "Wiederholungen" : dict-int,
+//                                    "SessionsCounter" : dict-int,
+//                                   ],
+//               "Snatch" : [
+//                           "Gewicht" : dict-int,
+//                           "Wiederholungen" : dict-int,
+//                           "SessionsCounter" : dict-int,
+//                          ],
+//               "Club Bell" : [
+//                              "Gewicht" : dict-int,
+//                              "Level" : dict-int,
+//                             ],
+//          ]               
 
 
 Unveränderliches Modul "Vordefinierte Übungen"
