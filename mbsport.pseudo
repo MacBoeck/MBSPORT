@@ -20,7 +20,7 @@ Variable    abstand_zu_heute   = heute - MeinSpeicher:GrößterIndex:Trainingsda
 //                          "Turkish Getup" : [
 //                                              "Gewicht" : Int/Enum (siehe unten),
 //                                              "Wiederholungen" : Int,
-//                                              "Fortschritt Counter": Int,
+//                                              "Fortschritt Counter": Int, // = die andere Version von "Sessions", da nichts hochzählt
 //                                            ],
 //                          "Squat" : [
 //                                      "Sessions" : Int,
