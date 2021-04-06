@@ -6,64 +6,61 @@ Variable    abstand_zu_heute   = heute - MeinSpeicher:GrößterIndex:Trainingsda
 
 
 
-/////////////////////////
-// Aufbau MeinSpeicher //
-/////////////////////////
-// MeinSpeicher = [
-//                  "1": [
-//                          "Trainingsdatum" : string? "yyyy-mm-dd",
-//                          "Tag im Plan" : Int,
-//                          "Joggen" : [
-//                                      "Dauer" : string? "hh:mm:ss",
-//                                      "Strecke" : Int (weil in Meter),
-//                                     ],
-//                          "Warm Up" : [
-//                                       Liegestütze : [
-//                                                      "Wiederholungen" : Int,
-//                                                      "SessionsCounter" : Int,
-//                                                     ],
-//                                       Sit Ups : [
-//                                                      "Wiederholungen" : Int,
-//                                                      "SessionsCounter" : Int,
-//                                                 ],
-//                                       Horse Riding Stance : [
-//                                                      "Dauer" : Int, // in Sekunden
-//                                                      "SessionsCounter" : Int,
-//                                                             ],
-//                                      ],
-//                          "Turkish Getup" : [
-//                                      "Gewicht" : Int/Enum (siehe unten),
-//                                      "Wiederholungen" : Int,
-//                                      "SessionsCounter": Int,
-//                                            ],
-//                          "Squat" : [
-//                                      "Gewicht" : Int,
-//                                      "Wiederholungen" : Int,
-//                                      "SessionsCounter" : Int,
-//                                    ],
-//                          "Swing" : [
-//                                      "Gewicht" : Int,
-//                                      "Wiederholungen" : Int,
-//                                      "SessionsCounter" : Int,
-//                                    ],
-//                          "Clean and Press" : [
-//                                      "Gewicht" : Int,
-//                                      "Wiederholungen" : Int,
-//                                      "SessionsCounter" : Int,
-//                                              ],
-//                          "Snatch" : [
-//                                      "Gewicht" : Int,
-//                                      "Wiederholungen" : Int,
-//                                      "SessionsCounter" : Int,//                                     ],
-//                          "Club Bell" : [
-//                                      "Gewicht" : Int/Enum,
-//                                      "Level" : Int,
-//                                        ],
-//                        ]
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Aufbau Speichern: StatusQuo als Archiv für Auswertung später, Heute als schnellerer Ladestartpunkt (Idee von R.S.) //
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//                  "2": [], et cetera…
-//                ]
-
+// StatusQuo = [
+//               "Joggen" : [
+//                            "Dauer" : string? "hh:mm:ss",
+//                            "Strecke" : Int (weil in Meter),
+//                          ],
+//               "Warm Up" : [
+//                            "Liegestütze" : [
+//                                             "Wiederholungen" : Int,
+//                                             "SessionsCounter" : Int,
+//                                            ],
+//                            "Sit Ups" : [
+//                                         "Wiederholungen" : Int,
+//                                         "SessionsCounter" : Int,
+//                                        ],
+//                            "Horse Riding Stance" : [
+//                                                     "Dauer" : Int, // in Sekunden
+//                                                     "SessionsCounter" : Int,
+//                                                    ],
+//                           ],
+//               "Turkish Getup" : [
+//                                  "Gewicht" : Int/Enum (siehe unten),
+//                                  "Wiederholungen" : Int,
+//                                  "SessionsCounter": Int,
+//                                 ],
+//               "Squat" : [
+//                          "Gewicht" : Int,
+//                          "Wiederholungen" : Int,
+//                          "SessionsCounter" : Int,
+//                         ],
+//               "Swing" : [
+//                          "Gewicht" : Int,
+//                          "Wiederholungen" : Int,
+//                          "SessionsCounter" : Int,
+//                         ],
+//               "Clean and Press" : [
+//                                    "Gewicht" : Int,
+//                                    "Wiederholungen" : Int,
+//                                    "SessionsCounter" : Int,
+//                                   ],
+//               "Snatch" : [
+//                           "Gewicht" : Int,
+//                           "Wiederholungen" : Int,
+//                           "SessionsCounter" : Int,
+//                          ],
+//               "Club Bell" : [
+//                              "Gewicht" : Int/Enum,
+//                              "Level" : Int,
+//             ]
+//
+// Heute = [
+//         ]
 
 
 Unveränderliches Modul "Vordefinierte Übungen"
