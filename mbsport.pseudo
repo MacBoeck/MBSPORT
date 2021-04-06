@@ -13,10 +13,24 @@ Variable    abstand_zu_heute   = heute - MeinSpeicher:GrößterIndex:Trainingsda
 //                  "1": [
 //                          "Trainingsdatum" : string? "yyyy-mm-dd",
 //                          "Tag im Plan" : Int,
-//                          "Joggen Dauer" : string? "hh:mm:ss",
-//                          "Joggen Strecke" : Int (weil in Meter),
-//                          "Warm Up Wiederholungen" : Int,
-//                          "Warum Up Zeit" : Int,
+//                          "Joggen" : [
+//                                      "Dauer" : string? "hh:mm:ss",
+//                                      "Strecke" : Int (weil in Meter),
+//                                     ],
+//                          "Warm Up" : [
+//                                       Liegestütze : [
+//                                                      "Wiederholungen" : Int,
+//                                                      "SessionsCounter" : Int,
+//                                                     ],
+//                                       Sit Ups : [
+//                                                      "Wiederholungen" : Int,
+//                                                      "SessionsCounter" : Int,
+//                                                 ],
+//                                       Horse Riding Stance : [
+//                                                      "Dauer" : Int, // in Sekunden
+//                                                      "SessionsCounter" : Int,
+//                                                             ],
+//                                      ],
 //                          "Turkish Getup" : [
 //                                      "Gewicht" : Int/Enum (siehe unten),
 //                                      "Wiederholungen" : Int,
